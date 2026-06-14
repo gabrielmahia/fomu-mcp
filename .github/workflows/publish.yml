@@ -1,16 +1,42 @@
-name: Publish to PyPI
+name: Publish to PyPI (auto-retry)
 on:
+  schedule:
+    - cron: "0 * * * *"    # Every hour until published
+  workflow_dispatch:
   release:
     types: [published]
-  workflow_dispatch:
+
 jobs:
-  publish:
+  check-and-publish:
     runs-on: ubuntu-latest
     steps:
+      - name: Check if already on PyPI
+        id: check
+        run: |
+          PKG="${{ github.event.repository.name }}"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://pypi.org/pypi/${PKG}/json")
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+          if [ "$STATUS" = "200" ]; then
+            echo "Already published — skipping"
+          else
+            echo "Not yet published — will attempt upload"
+          fi
+
       - uses: actions/checkout@v4
+        if: steps.check.outputs.status != '200'
+
       - uses: actions/setup-python@v5
+        if: steps.check.outputs.status != '200'
         with:
           python-version: "3.12"
-      - run: pip install build twine
-      - run: python -m build
-      - run: python -m twine upload dist/* --username __token__ --password ${{ secrets.PYPI_API_TOKEN }} --non-interactive --skip-existing
+
+      - name: Build and publish
+        if: steps.check.outputs.status != '200'
+        run: |
+          pip install build twine
+          python -m build
+          python -m twine upload dist/* \
+            --username __token__ \
+            --password ${{ secrets.PYPI_API_TOKEN }} \
+            --non-interactive \
+            --skip-existing
