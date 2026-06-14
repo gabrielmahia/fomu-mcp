@@ -1,0 +1,63 @@
+{
+  "$schema": "https://glama.ai/mcp/schemas/1.0.0/server.json",
+  "name": "fomu-mcp",
+  "version": "0.1.0",
+  "description": "Kenya civic form agent via MCP \u2014 form checklists for government processes, draft letter generator, requirements checker, eCitizen portal guide, Huduma Centre finder, and timeline planner. 6 tools.",
+  "license": "MIT",
+  "homepage": "https://gabrielmahia.github.io",
+  "author": {
+    "name": "Gabriel Mahia",
+    "email": "contact@aikungfu.dev",
+    "url": "https://gabrielmahia.github.io"
+  },
+  "keywords": [
+    "kenya",
+    "forms",
+    "ecitizen",
+    "huduma",
+    "government",
+    "civic",
+    "permits",
+    "mcp",
+    "africa"
+  ],
+  "categories": [
+    "Government Data",
+    "Documentation Access"
+  ],
+  "tools": [
+    {
+      "name": "form_checklist",
+      "description": "Government form checklists"
+    },
+    {
+      "name": "form_draft_letter",
+      "description": "Draft letter generator"
+    },
+    {
+      "name": "form_requirements_check",
+      "description": "Requirements checker"
+    },
+    {
+      "name": "ecitizen_guide",
+      "description": "eCitizen portal guide"
+    },
+    {
+      "name": "huduma_centre_guide",
+      "description": "Huduma Centre finder"
+    },
+    {
+      "name": "form_timeline_planner",
+      "description": "Process timeline planner"
+    }
+  ],
+  "installation": {
+    "type": "pip",
+    "package": "fomu-mcp",
+    "command": "pip install fomu-mcp"
+  },
+  "links": {
+    "github": "https://github.com/gabrielmahia/fomu-mcp",
+    "pypi": "https://pypi.org/project/fomu-mcp"
+  }
+}
