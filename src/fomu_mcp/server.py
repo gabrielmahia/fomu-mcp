@@ -8,7 +8,7 @@ Fomu (Swahili for 'form') handles Kenya's most common citizen-facing documents.
 from __future__ import annotations
 from typing import Optional
 from fastmcp import FastMCP
-mcp = FastMCP(name="fomu-mcp", description="Kenya civic form agent — generates checklists, guidance, and draft applications for common government processes. DEMO.")
+mcp = FastMCP(name="fomu-mcp", instructions="Kenya civic form agent — generates checklists, guidance, and draft applications for common government processes. DEMO.")
 
 # ── Form Definitions ──────────────────────────────────────────────────────────
 FORMS = {
