@@ -1,0 +1,14 @@
+# Smithery configuration for fomu-mcp
+# East Africa AI Coordination Infrastructure — AI-KungFU
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties: {}
+    required: []
+  commandFunction: |-
+    (config) => ({
+      command: "fomu-mcp",
+      args: [],
+      env: {}
+    })
