@@ -1,5 +1,8 @@
 # fomu-mcp
 
+[![fomu-mcp Glama score](https://glama.ai/mcp/servers/gabrielmahia/fomu-mcp/badges/score.svg)](https://glama.ai/mcp/servers/gabrielmahia/fomu-mcp)
+
+
 > Kenya civic form agent via MCP — turns citizen needs into government form checklists, draft applications, and timeline plans.
 
 [![PyPI](https://img.shields.io/badge/PyPI-v0.1.0-blue?logo=pypi)](https://pypi.org/project/fomu-mcp/)
