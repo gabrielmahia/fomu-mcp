@@ -8,7 +8,6 @@ Fomu (Swahili for 'form') handles Kenya's most common citizen-facing documents.
 from __future__ import annotations
 from typing import Annotated, Optional
 from fastmcp import FastMCP
-from pydantic import Field
 mcp = FastMCP(name="fomu-mcp", instructions="Kenya civic form agent — generates checklists, guidance, and draft applications for common government processes. DEMO.")
 
 # ── Form Definitions ──────────────────────────────────────────────────────────
@@ -98,7 +97,7 @@ FORMS = {
 }
 
 @mcp.tool(name="form_checklist", description="Generate a checklist for a Kenya government form or application. DEMO.", annotations={"readOnlyHint": True, "openWorldHint": False})
-def form_checklist(form_type: str = Field(..., description="Government form or process e.g. 'business_registration', 'kra_pin', 'nhif_registration', 'land_title_search', 'police_clearance', 'passport'"), applicant_type: Optional[str] = Field("individual", description="Applicant category: 'individual', 'company', 'ngo'. Affects required documents.")) -> dict:
+def form_checklist(form_type: Annotated[str, "Government form or process e.g."], applicant_type: Annotated[Optional[str], "Applicant category:"] = "individual") -> dict:
     f = form_type.lower().replace(" ", "_").replace("-", "_")
     form = FORMS.get(f)
     if not form:
@@ -119,7 +118,7 @@ def form_checklist(form_type: str = Field(..., description="Government form or p
             "disclaimer": "Requirements may change. Verify at the official portal before applying."}
 
 @mcp.tool(name="form_draft_letter", description="Generate a draft formal letter for common Kenya civic requests. DEMO.", annotations={"readOnlyHint": True, "openWorldHint": False})
-def form_draft_letter(letter_type: str = Field(..., description="Letter category e.g. 'introduction', 'complaint', 'appeal', 'request_extension'"), applicant_name: str = Field(..., description="Full name of the applicant for the letter salutation and signature"), details: Optional[str] = Field(None, description="Additional context to personalise the letter e.g. reference number, specific department, date of original application")) -> dict:
+def form_draft_letter(letter_type: Annotated[str, "Letter category e.g."], applicant_name: Annotated[str, "Full name of the applicant for the letter salutation and signature"], details: Annotated[Optional[str], "Additional context to personalise the letter e.g. reference number, specific department, date of original application"] = None) -> dict:
     TEMPLATES = {
         "introduction_letter": {
             "title": "Letter of Introduction",
@@ -222,7 +221,7 @@ Date: _______________""",
             "disclaimer": "Draft only. Review with the relevant authority before submitting. DEMO."}
 
 @mcp.tool(name="form_requirements_check", description="Check if user has all requirements for a Kenya government form. DEMO.", annotations={"readOnlyHint": True, "openWorldHint": False})
-def form_requirements_check(form_type: str = Field(..., description="Form type to check against e.g. 'business_registration', 'passport', 'land_title_search'"), user_has: list = Field(..., description="List of documents the applicant already has e.g. ['national_id', 'kra_pin', 'passport_photo']")) -> dict:
+def form_requirements_check(form_type: Annotated[str, "Form type to check against e.g."], user_has: Annotated[list, "List of documents the applicant already has e.g. ["]) -> dict:
     f = form_type.lower().replace(" ", "_").replace("-", "_")
     form = FORMS.get(f)
     if not form:
@@ -246,7 +245,7 @@ def form_requirements_check(form_type: str = Field(..., description="Form type t
             "portal": form["portal"]}
 
 @mcp.tool(name="ecitizen_guide", description="Guide to Kenya eCitizen portal services. DEMO.", annotations={"readOnlyHint": True, "openWorldHint": False})
-def ecitizen_guide(service_category: Optional[str] = Field(None, description="eCitizen service category e.g. 'ntsa', 'immigration', 'kra', 'nhif', 'nssf'. Leave empty for full service catalogue.")) -> dict:
+def ecitizen_guide(service_category: Annotated[Optional[str], "eCitizen service category e.g."] = None) -> dict:
     """Return step-by-step guide for completing Kenya government services on eCitizen portal."""
     SERVICES = {
         "business": ["Business name registration (BRS)", "Single Business Permit", "Trade licence",
@@ -270,7 +269,7 @@ def ecitizen_guide(service_category: Optional[str] = Field(None, description="eC
             "helpdesk": "0800-221333 (toll-free) | support@ecitizen.go.ke"}
 
 @mcp.tool(name="huduma_centre_guide", description="Guide to Kenya Huduma Centre services and locations. DEMO.", annotations={"readOnlyHint": True, "openWorldHint": False})
-def huduma_centre_guide(county: Optional[str] = Field(None, description="Kenya county name e.g. 'Nairobi', 'Mombasa', 'Kisumu'. Leave empty for all Huduma Centre locations.")) -> dict:
+def huduma_centre_guide(county: Annotated[Optional[str], "Kenya county name e.g."] = None) -> dict:
     """Return location, services, and operating hours for Huduma Centre offices in Kenya."""
     CENTRES = {
         "Nairobi": ["Huduma Centre GPO (Kenyatta Ave)", "Huduma Centre Teleposta (Ngong Rd)",
@@ -297,7 +296,7 @@ def huduma_centre_guide(county: Optional[str] = Field(None, description="Kenya c
             "portal": "hudumakenya.go.ke"}
 
 @mcp.tool(name="form_timeline_planner", description="Plan timeline for Kenya government processes. DEMO.", annotations={"readOnlyHint": True, "openWorldHint": False})
-def form_timeline_planner(processes: list = Field(..., description="List of government processes to schedule e.g. ['business_registration', 'kra_pin', 'nhif_registration']"), start_date: Optional[str] = Field(None, description="ISO date to start planning from e.g. '2025-01-15'. Defaults to today if omitted.")) -> dict:
+def form_timeline_planner(processes: Annotated[list, "List of government processes to schedule e.g. ["], start_date: Annotated[Optional[str], "ISO date to start planning from e.g."] = None) -> dict:
     import datetime
     start = start_date or datetime.date.today().isoformat()
     try:
