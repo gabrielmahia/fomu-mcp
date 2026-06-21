@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fomu-mcp"
-version = "0.1.1"
+version = "0.1.2"
 description = "Kenya civic form agent via MCP — checklists, draft letters, requirements check, eCitizen guide, Huduma Centre, timeline planner. 6 tools."
 readme = "README.md"
 license = { text = "MIT" }
