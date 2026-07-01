@@ -4,6 +4,14 @@
 [![smithery badge](https://smithery.ai/badge/@gabrielmahia/fomu-mcp)](https://smithery.ai/server/@gabrielmahia/fomu-mcp)
 
 
+---
+**Compatible with `claude-sonnet-5`** (released 2026-06-30) — Anthropic's most agentic
+Sonnet yet. Runs multi-step tool chains end-to-end without stopping short.
+Install: `pip install fomu-mcp` · Use with any MCP client.
+
+---
+
+
 > Kenya civic form agent via MCP — turns citizen needs into government form checklists, draft applications, and timeline plans.
 
 [![PyPI](https://img.shields.io/badge/PyPI-v0.1.0-blue?logo=pypi)](https://pypi.org/project/fomu-mcp/)
