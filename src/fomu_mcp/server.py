@@ -325,3 +325,7 @@ def form_timeline_planner(processes: Annotated[list, "List of government process
             "estimated_completion": end, "total_calendar_days": total_days,
             "plan": plan, "tip": "Apply for processes in parallel where possible to save time.",
             "disclaimer": "Processing times are estimates. Actual times vary by office and season."}
+
+def main() -> None:
+    """Console entry point."""
+    mcp.run()
