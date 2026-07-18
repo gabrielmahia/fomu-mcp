@@ -1,7 +1,7 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
   "name": "io.github.gabrielmahia/fomu-mcp",
-  "description": "fomu-mcp",
+  "description": "MCP server for government forms and document workflows in Kenya (fomu = form)",
   "repository": {
     "url": "https://github.com/gabrielmahia/fomu-mcp",
     "source": "github"
