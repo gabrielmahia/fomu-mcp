@@ -58,14 +58,14 @@ FORMS = {
     "nhif_registration": {
         "name": "NHIF/SHA Registration",
         "authority": "Social Health Authority (SHA)",
-        "portal": "sha.go.ke or NHIF offices",
+        "portal": "sha.go.ke or SHA offices",
         "cost_kes": {"employed": 500, "self_employed": 500, "voluntary": 500},
         "processing_days": 7,
         "fields": ["Full name", "ID number", "Phone number", "Employer name (if employed)",
                    "Dependants (spouse, children under 21)", "Bank account (optional)"],
         "documents": ["National ID", "Passport photo", "Payslip (if employed)",
                       "Marriage certificate (for spouse)", "Birth certificates (for children)"],
-        "steps": ["Visit sha.go.ke or nearest NHIF office", "Fill SHA Form 1",
+        "steps": ["Visit sha.go.ke or the nearest SHA office", "Fill SHA Form 1",
                   "Submit with documents", "Receive SHA number by SMS (7 days)",
                   "Set up monthly contribution (M-PESA Paybill 200222)"],
     },
@@ -182,7 +182,7 @@ Yours faithfully,
 {applicant_name}
 ID: _______________
 Date: _______________""",
-            "use_cases": "KPLC complaint, KRA dispute, county services complaint, NHIF complaint",
+            "use_cases": "KPLC complaint, KRA dispute, county services complaint, SHA complaint",
         },
         "land_inquiry": {
             "title": "Land Inquiry Letter",
@@ -282,7 +282,7 @@ def huduma_centre_guide(county: Annotated[Optional[str], "Kenya county name e.g.
     SERVICES_OFFERED = [
         "National ID card (application and replacement)",
         "Passport services", "Birth and death certificates",
-        "KRA services", "NHIF registration", "NSSF services",
+        "KRA services", "SHA registration", "NSSF services",
         "Certificate of Good Conduct (fingerprinting)",
         "Land title search", "Higher Education Loans Board (HELB)",
         "Business name registration", "Immigration services",
