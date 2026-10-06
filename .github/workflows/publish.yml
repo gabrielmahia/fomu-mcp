@@ -1,42 +1,61 @@
-name: Publish to PyPI (auto-retry)
+name: Publish
+
+# One workflow, in order: test -> PyPI (Trusted Publisher, no token) -> MCP registry.
+# The registry job needs the PyPI job, so it can never publish a version PyPI does not have yet.
+#
+# One-time setup on pypi.org (project -> Manage -> Publishing -> Add a new publisher -> GitHub):
+#   Owner: gabrielmahia   Repository: fomu-mcp   Workflow name: publish.yml   Environment name: pypi
+# To release: bump the version in pyproject.toml and server.json, merge, then push a tag:  git tag vX.Y.Z && git push origin vX.Y.Z
+
 on:
-  schedule:
-    - cron: "0 * * * *"    # Every hour until published
+  push:
+    tags: ["v*"]
   workflow_dispatch:
-  release:
-    types: [published]
 
 jobs:
-  check-and-publish:
+  test:
+    name: Test before publish
     runs-on: ubuntu-latest
     steps:
-      - name: Check if already on PyPI
-        id: check
-        run: |
-          PKG="${{ github.event.repository.name }}"
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://pypi.org/pypi/${PKG}/json")
-          echo "status=$STATUS" >> $GITHUB_OUTPUT
-          if [ "$STATUS" = "200" ]; then
-            echo "Already published — skipping"
-          else
-            echo "Not yet published — will attempt upload"
-          fi
-
       - uses: actions/checkout@v4
-        if: steps.check.outputs.status != '200'
-
       - uses: actions/setup-python@v5
-        if: steps.check.outputs.status != '200'
         with:
           python-version: "3.12"
+      - run: pip install -e . pytest
+      - run: python -m pytest tests -q
 
-      - name: Build and publish
-        if: steps.check.outputs.status != '200'
+  pypi:
+    name: Build and publish to PyPI
+    needs: test
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/fomu-mcp
+    permissions:
+      id-token: write   # Trusted Publisher (OIDC): no API token is stored anywhere
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install build && python -m build
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true   # a re-run, or a version uploaded by hand, does not fail
+
+  registry:
+    name: Publish to MCP Registry
+    needs: pypi
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install MCP Publisher
         run: |
-          pip install build twine
-          python -m build
-          python -m twine upload dist/* \
-            --username __token__ \
-            --password ${{ secrets.PYPI_API_TOKEN }} \
-            --non-interactive \
-            --skip-existing
+          curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
+      - name: Login to MCP Registry
+        run: ./mcp-publisher login github-oidc
+      - name: Publish to MCP Registry
+        run: ./mcp-publisher publish
