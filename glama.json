@@ -1,8 +1,8 @@
 {
   "$schema": "https://glama.ai/mcp/schemas/1.0.0/server.json",
   "name": "fomu-mcp",
-  "version": "0.1.0",
-  "description": "Kenya civic form agent via MCP \u2014 form checklists for government processes, draft letter generator, requirements checker, eCitizen portal guide, Huduma Centre finder, and timeline planner. 6 tools.",
+  "version": "0.1.5",
+  "description": "Kenya civic form agent via MCP — checklists, draft letters, requirements check, eCitizen guide, Huduma Centre, timeline planner",
   "license": "MIT",
   "homepage": "https://gabrielmahia.github.io",
   "author": {
@@ -37,27 +37,27 @@
   "tools": [
     {
       "name": "form_checklist",
-      "description": "Government form checklists"
+      "description": "Generate a checklist for a Kenya government form or application. DEMO."
     },
     {
       "name": "form_draft_letter",
-      "description": "Draft letter generator"
+      "description": "Generate a draft formal letter for common Kenya civic requests. DEMO."
     },
     {
       "name": "form_requirements_check",
-      "description": "Requirements checker"
+      "description": "Check if user has all requirements for a Kenya government form. DEMO."
     },
     {
       "name": "ecitizen_guide",
-      "description": "eCitizen portal guide"
+      "description": "Guide to Kenya eCitizen portal services. DEMO."
     },
     {
       "name": "huduma_centre_guide",
-      "description": "Huduma Centre finder"
+      "description": "Guide to Kenya Huduma Centre services and locations. DEMO."
     },
     {
       "name": "form_timeline_planner",
-      "description": "Process timeline planner"
+      "description": "Plan timeline for Kenya government processes. DEMO."
     }
   ],
   "installation": {
@@ -68,5 +68,8 @@
   "links": {
     "github": "https://github.com/gabrielmahia/fomu-mcp",
     "pypi": "https://pypi.org/project/fomu-mcp"
-  }
+  },
+  "maintainers": [
+    "gabrielmahia"
+  ]
 }
