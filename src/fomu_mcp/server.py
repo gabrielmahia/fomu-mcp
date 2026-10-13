@@ -6,8 +6,12 @@ Source: Engineer's Schematic — Form Agent type:
 Fomu (Swahili for 'form') handles Kenya's most common citizen-facing documents.
 """
 from __future__ import annotations
+
 from typing import Annotated, Optional
+
 from fastmcp import FastMCP
+from pydantic import Field
+
 mcp = FastMCP(name="fomu-mcp", instructions="Kenya civic form agent — generates checklists, guidance, and draft applications for common government processes. DEMO.")
 
 # ── Form Definitions ──────────────────────────────────────────────────────────
@@ -96,8 +100,8 @@ FORMS = {
     },
 }
 
-@mcp.tool(name="form_checklist", description="Generate a checklist for a Kenya government form or application. DEMO.", annotations={"readOnlyHint": True, "openWorldHint": False})
-def form_checklist(form_type: Annotated[str, "Government form or process e.g."], applicant_type: Annotated[Optional[str], "Applicant category:"] = "individual") -> dict:
+@mcp.tool(name="form_checklist", description="Checklist for a Kenyan government form or registration: authority, portal, cost, processing days, required fields and documents, and steps. Use when someone asks what they need to apply. form_type is matched by name (spaces become underscores); an unknown form returns an error listing the available forms. Returns the source label, the form, applicant_type (echoed), authority, portal, cost, processing days, fields, documents and steps. Fees and times are labelled DEMO and change: verify at the official portal. Read-only; no side effects.", annotations={"readOnlyHint": True, "openWorldHint": False})
+def form_checklist(form_type: Annotated[Annotated[str, Field(description="Form name such as business registration or kra pin.")], "Government form or process e.g."], applicant_type: Annotated[Annotated[str | None, Field(description="individual (default); only echoed back.")], "Applicant category:"] = "individual") -> dict:
     f = form_type.lower().replace(" ", "_").replace("-", "_")
     form = FORMS.get(f)
     if not form:
@@ -117,8 +121,8 @@ def form_checklist(form_type: Annotated[str, "Government form or process e.g."],
             "steps": form["steps"], "note": form.get("note", ""),
             "disclaimer": "Requirements may change. Verify at the official portal before applying."}
 
-@mcp.tool(name="form_draft_letter", description="Generate a draft formal letter for common Kenya civic requests. DEMO.", annotations={"readOnlyHint": True, "openWorldHint": False})
-def form_draft_letter(letter_type: Annotated[str, "Letter category e.g."], applicant_name: Annotated[str, "Full name of the applicant for the letter salutation and signature"], details: Annotated[Optional[str], "Additional context to personalise the letter e.g. reference number, specific department, date of original application"] = None) -> dict:
+@mcp.tool(name="form_draft_letter", description="Draft a formal letter from a template (introduction, reference, complaint or land inquiry) filled with the applicant's name and details. Use when someone needs a starting draft for an office. letter_type must be one of the available templates; an unknown type returns an error listing them. details replaces the placeholder text in the body. Returns the source label, letter type, title, the draft text, use cases and a disclaimer. A template only: review it before sending, since nothing is checked or sent. Read-only; no side effects.", annotations={"readOnlyHint": True, "openWorldHint": False})
+def form_draft_letter(letter_type: Annotated[Annotated[str, Field(description="Template name: introduction_letter, reference_letter, complaint_letter or land_inquiry.")], "Letter category e.g."], applicant_name: Annotated[Annotated[str, Field(description="Name to put in the letter.")], "Full name of the applicant for the letter salutation and signature"], details: Annotated[Annotated[str | None, Field(description="Optional text for the purpose or subject placeholder.")], "Additional context to personalise the letter e.g. reference number, specific department, date of original application"] = None) -> dict:
     TEMPLATES = {
         "introduction_letter": {
             "title": "Letter of Introduction",
@@ -220,8 +224,8 @@ Date: _______________""",
             "title": template["title"], "draft": body, "use_cases": template["use_cases"],
             "disclaimer": "Draft only. Review with the relevant authority before submitting. DEMO."}
 
-@mcp.tool(name="form_requirements_check", description="Check if user has all requirements for a Kenya government form. DEMO.", annotations={"readOnlyHint": True, "openWorldHint": False})
-def form_requirements_check(form_type: Annotated[str, "Form type to check against e.g."], user_has: Annotated[list, "List of documents the applicant already has e.g. ["]) -> dict:
+@mcp.tool(name="form_requirements_check", description="Compare the documents a person already has against what a Kenyan form requires, and list what is missing. Use when someone asks whether they are ready to apply. form_type is matched by name; an unknown form returns an error listing the available forms. user_has is the list of documents they hold. Returns the source label, the form, which requirements are met and which are missing. Based on a small table labelled DEMO: verify requirements with the authority. Read-only; no side effects.", annotations={"readOnlyHint": True, "openWorldHint": False})
+def form_requirements_check(form_type: Annotated[Annotated[str, Field(description="Form name such as business permit.")], "Form type to check against e.g."], user_has: Annotated[Annotated[list, Field(description="List of documents the person already has.")], "List of documents the applicant already has e.g. ["]) -> dict:
     f = form_type.lower().replace(" ", "_").replace("-", "_")
     form = FORMS.get(f)
     if not form:
@@ -244,8 +248,8 @@ def form_requirements_check(form_type: Annotated[str, "Form type to check agains
             "next_step": "Proceed to application" if ready else f"Obtain missing items: {missing[:2]}",
             "portal": form["portal"]}
 
-@mcp.tool(name="ecitizen_guide", description="Guide to Kenya eCitizen portal services. DEMO.", annotations={"readOnlyHint": True, "openWorldHint": False})
-def ecitizen_guide(service_category: Annotated[Optional[str], "eCitizen service category e.g."] = None) -> dict:
+@mcp.tool(name="ecitizen_guide", description="What government services are available on the eCitizen portal in Kenya, by category (business, identity, transport and others), with payment methods and the helpdesk. Use when someone asks whether a service is online. Keywords in service_category select categories; if none match, ALL categories are returned. Returns the source label, the matching services, the portal and, with no category, the payment and helpdesk details. A static list labelled DEMO: services move between portals, so confirm on ecitizen.go.ke. Read-only; no side effects.", annotations={"readOnlyHint": True, "openWorldHint": False})
+def ecitizen_guide(service_category: Annotated[Annotated[str | None, Field(description="Optional category such as business or transport; omit for all.")], "eCitizen service category e.g."] = None) -> dict:
     """Return step-by-step guide for completing Kenya government services on eCitizen portal."""
     SERVICES = {
         "business": ["Business name registration (BRS)", "Single Business Permit", "Trade licence",
@@ -268,8 +272,8 @@ def ecitizen_guide(service_category: Annotated[Optional[str], "eCitizen service 
             "all_services": SERVICES, "payment": "M-PESA, debit/credit card, bank transfer",
             "helpdesk": "0800-221333 (toll-free) | support@ecitizen.go.ke"}
 
-@mcp.tool(name="huduma_centre_guide", description="Guide to Kenya Huduma Centre services and locations. DEMO.", annotations={"readOnlyHint": True, "openWorldHint": False})
-def huduma_centre_guide(county: Annotated[Optional[str], "Kenya county name e.g."] = None) -> dict:
+@mcp.tool(name="huduma_centre_guide", description="Huduma Centres in Kenya, which provide government services in one place, with services offered, opening hours and contacts. Use when someone asks where to get government services in person. county is matched by name; an unmatched county returns ALL centres and county_matched is false; with no county it returns all. Returns the source label, county, county_matched, the centres, services, hours and contacts. A static list labelled DEMO: confirm locations and hours with Huduma Kenya. Read-only; no side effects.", annotations={"readOnlyHint": True, "openWorldHint": False})
+def huduma_centre_guide(county: Annotated[Annotated[str | None, Field(description="Optional county such as Nairobi; unmatched values return all centres.")], "Kenya county name e.g."] = None) -> dict:
     """Return location, services, and operating hours for Huduma Centre offices in Kenya."""
     CENTRES = {
         "Nairobi": ["Huduma Centre GPO (Kenyatta Ave)", "Huduma Centre Teleposta (Ngong Rd)",
@@ -288,28 +292,33 @@ def huduma_centre_guide(county: Annotated[Optional[str], "Kenya county name e.g.
         "Business name registration", "Immigration services",
     ]
     centres = CENTRES.get(county.title() if county else "Nairobi", CENTRES)
-    return {"source": "DEMO — Huduma Kenya", "county": county or "All",
+    return {"source": "DEMO — Huduma Kenya", "county": county or "All", "county_matched": county is None or county.title() in CENTRES,
             "centres": centres if county else CENTRES,
             "services": SERVICES_OFFERED,
             "opening_hours": "Monday–Friday: 8:00 AM–5:00 PM",
             "contact": "0800221333 (toll-free) | info@hudumakenya.go.ke",
             "portal": "hudumakenya.go.ke"}
 
-@mcp.tool(name="form_timeline_planner", description="Plan timeline for Kenya government processes. DEMO.", annotations={"readOnlyHint": True, "openWorldHint": False})
-def form_timeline_planner(processes: Annotated[list, "List of government processes to schedule e.g. ["], start_date: Annotated[Optional[str], "ISO date to start planning from e.g."] = None) -> dict:
+@mcp.tool(name="form_timeline_planner", description="Plan a sequence of Kenyan government processes with start and completion dates. Use when someone must do several registrations and wants a rough schedule. Each process gets 3 preparation days plus its processing days from the table; a process not in the table is planned with a placeholder of 7 days and listed in unknown_processes. An invalid start_date returns an error instead of silently using today. Returns the source label, start date, estimated completion, total calendar days, the per-process plan, unknown_processes and a disclaimer. Processing times are labelled DEMO estimates. Read-only; no side effects.", annotations={"readOnlyHint": True, "openWorldHint": False})
+def form_timeline_planner(processes: Annotated[list, "List of government processes to schedule e.g. ["], start_date: Annotated[str | None, "ISO date to start planning from e.g."] = None) -> dict:
     import datetime
+    if isinstance(processes, str):
+        processes = [processes]
     start = start_date or datetime.date.today().isoformat()
     try:
         start_dt = datetime.date.fromisoformat(start)
-    except:
-        start_dt = datetime.date.today()
+    except ValueError:
+        return {"error": f"start_date must be an ISO date (YYYY-MM-DD), got {start_date!r}."}
     plan = []
+    unknown = []
     current = start_dt
     total_days = 0
     for process in processes:
         p = process.lower().replace(" ", "_").replace("-", "_")
         form = FORMS.get(p)
         days = form["processing_days"] if form else 7
+        if not form:
+            unknown.append(process)
         name = form["name"] if form else process
         prep_days = 3
         plan.append({
@@ -323,7 +332,7 @@ def form_timeline_planner(processes: Annotated[list, "List of government process
     end = (start_dt + datetime.timedelta(days=total_days)).isoformat()
     return {"source": "DEMO — Kenya government processing times", "start_date": start,
             "estimated_completion": end, "total_calendar_days": total_days,
-            "plan": plan, "tip": "Apply for processes in parallel where possible to save time.",
+            "plan": plan, "unknown_processes": unknown, "tip": "Apply for processes in parallel where possible to save time.",
             "disclaimer": "Processing times are estimates. Actual times vary by office and season."}
 
 def main() -> None:
