@@ -37,27 +37,27 @@
   "tools": [
     {
       "name": "form_checklist",
-      "description": "Generate a checklist for a Kenya government form or application. DEMO."
+      "description": "Checklist for a Kenyan government form or registration: authority, portal, cost, processing days, required fields and documents, and steps. Use when someone asks what they need to apply. form_type is matched by name (spaces become underscores); an unknown form returns an error listing the available forms. Returns the source label, the form, applicant_type (echoed), authority, portal, cost, processing days, fields, documents and steps. Fees and times are labelled DEMO and change: verify at the official portal. Read-only; no side effects."
     },
     {
       "name": "form_draft_letter",
-      "description": "Generate a draft formal letter for common Kenya civic requests. DEMO."
+      "description": "Draft a formal letter from a template (introduction, reference, complaint or land inquiry) filled with the applicant's name and details. Use when someone needs a starting draft for an office. letter_type must be one of the available templates; an unknown type returns an error listing them. details replaces the placeholder text in the body. Returns the source label, letter type, title, the draft text, use cases and a disclaimer. A template only: review it before sending, since nothing is checked or sent. Read-only; no side effects."
     },
     {
       "name": "form_requirements_check",
-      "description": "Check if user has all requirements for a Kenya government form. DEMO."
+      "description": "Compare the documents a person already has against what a Kenyan form requires, and list what is missing. Use when someone asks whether they are ready to apply. form_type is matched by name; an unknown form returns an error listing the available forms. user_has is the list of documents they hold. Returns the source label, the form, which requirements are met and which are missing. Based on a small table labelled DEMO: verify requirements with the authority. Read-only; no side effects."
     },
     {
       "name": "ecitizen_guide",
-      "description": "Guide to Kenya eCitizen portal services. DEMO."
+      "description": "What government services are available on the eCitizen portal in Kenya, by category (business, identity, transport and others), with payment methods and the helpdesk. Use when someone asks whether a service is online. Keywords in service_category select categories; if none match, ALL categories are returned. Returns the source label, the matching services, the portal and, with no category, the payment and helpdesk details. A static list labelled DEMO: services move between portals, so confirm on ecitizen.go.ke. Read-only; no side effects."
     },
     {
       "name": "huduma_centre_guide",
-      "description": "Guide to Kenya Huduma Centre services and locations. DEMO."
+      "description": "Huduma Centres in Kenya, which provide government services in one place, with services offered, opening hours and contacts. Use when someone asks where to get government services in person. county is matched by name; an unmatched county returns ALL centres and county_matched is false; with no county it returns all. Returns the source label, county, county_matched, the centres, services, hours and contacts. A static list labelled DEMO: confirm locations and hours with Huduma Kenya. Read-only; no side effects."
     },
     {
       "name": "form_timeline_planner",
-      "description": "Plan timeline for Kenya government processes. DEMO."
+      "description": "Plan a sequence of Kenyan government processes with start and completion dates. Use when someone must do several registrations and wants a rough schedule. Each process gets 3 preparation days plus its processing days from the table; a process not in the table is planned with a placeholder of 7 days and listed in unknown_processes. An invalid start_date returns an error instead of silently using today. Returns the source label, start date, estimated completion, total calendar days, the per-process plan, unknown_processes and a disclaimer. Processing times are labelled DEMO estimates. Read-only; no side effects."
     }
   ],
   "installation": {
