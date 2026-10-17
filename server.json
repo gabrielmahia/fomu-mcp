@@ -1,17 +1,17 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
   "name": "io.github.gabrielmahia/fomu-mcp",
-  "description": "MCP server for government forms and document workflows in Kenya (fomu = form)",
+  "description": "Kenya government form guides: checklists, draft letters, eCitizen, Huduma, timelines. Sample data.",
   "repository": {
     "url": "https://github.com/gabrielmahia/fomu-mcp",
     "source": "github"
   },
-  "version": "0.1.6",
+  "version": "0.1.7",
   "packages": [
     {
       "registryType": "pypi",
       "identifier": "fomu-mcp",
-      "version": "0.1.6",
+      "version": "0.1.7",
       "transport": {
         "type": "stdio"
       }
