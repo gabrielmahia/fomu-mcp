@@ -7,12 +7,20 @@ Fomu (Swahili for 'form') handles Kenya's most common citizen-facing documents.
 """
 from __future__ import annotations
 
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as _pkg_version
 from typing import Annotated, Optional
 
 from fastmcp import FastMCP
 from pydantic import Field
 
-mcp = FastMCP(name="fomu-mcp", instructions="Kenya civic form agent — generates checklists, guidance, and draft applications for common government processes. DEMO.")
+try:
+    _VERSION = _pkg_version("fomu-mcp")
+except PackageNotFoundError:  # a source tree that was never installed
+    _VERSION = "0+unknown"
+
+
+mcp = FastMCP(name="fomu-mcp", instructions="Kenya civic form agent — generates checklists, guidance, and draft applications for common government processes. DEMO.", version=_VERSION)
 
 # ── Form Definitions ──────────────────────────────────────────────────────────
 FORMS = {
