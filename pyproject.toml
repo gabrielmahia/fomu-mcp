@@ -4,15 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fomu-mcp"
-version = "0.1.9"
+version = "0.1.10"
 description = "Kenya civic form agent via MCP — checklists, draft letters, requirements check, eCitizen guide, Huduma Centre, timeline planner. 6 tools."
 readme = "README.md"
 license = "MIT"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = ["fastmcp>=0.9"]
 license-files = ["LICENSE"]
 classifiers = [
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
