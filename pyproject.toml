@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fomu-mcp"
-version = "0.1.10"
+version = "0.1.11"
 description = "Kenya civic form agent via MCP — checklists, draft letters, requirements check, eCitizen guide, Huduma Centre, timeline planner. 6 tools."
 readme = "README.md"
 license = "MIT"
@@ -23,6 +23,7 @@ classifiers = [
 fomu-mcp = "fomu_mcp.server:mcp.run"
 
 [project.urls]
+Issues = "https://github.com/gabrielmahia/fomu-mcp/issues"
 Homepage = "https://github.com/gabrielmahia/fomu-mcp"
 Documentation = "https://github.com/gabrielmahia/nairobi-stack"
 "MCP Registry" = "https://registry.modelcontextprotocol.io"
